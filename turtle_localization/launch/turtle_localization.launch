@@ -2,44 +2,68 @@
     <!--Käynnistetään turtlesim ja teleop nodet-->
     <node pkg="turtlesim" type="turtlesim_node" name="turtlesim"/>
     <node pkg="turtlesim" type="turtle_teleop_key" name="teleop" output="screen"/>
-    <!--käynnistetään turtle joka julkaisee 1nopeussensorin sensorivirheen sisältämää tietoa-->
+    <!--käynnistetään turtle joka julkaisee nopeussensorin sensorivirheen sisältämää tietoa-->
     <node pkg="turtle_localization" type="turtle_odometry.py" name="turtle1_odometry_node" output="screen"/>
-    <!--käynnistetään turtle joka julkaisee paikkasensorin sensorivirheen sisältämää tietoa-->
-    <node pkg="turtle_localization" type="turtle_odometry2.py" name="turtle1_odometry2_node" output="screen">
-        <param name="random_noise_x" type="string" value="0.2"/>
-        <param name="random_noise_y" type="string" value="0.2"/>
-        <param name="random_noise_yaw" type="string" value="0.2"/>
+    
+    <!--käynnistetään turtle joka julkaisee paikkasensorivirheen sisältämää tietoa-->
+    <node pkg="turtle_localization" type="turtle_positioning_system.py" name="turtle_positioning_system" output="screen">
+        <param name="random_noise_x" type="double" value="0.2"/>
+        <param name="random_noise_y" type="double" value="0.2"/>
+        <param name="random_noise_theta" type="double" value="0.2"/>
     </node>
     <!--Käynniseteään node, joka kuuntelee sensorivirheen sisältämää viestiä ja liikuttaa turtle2 sen mukaan-->
     <node pkg="turtle_localization" type="turtle2_noisy.py" name="turtle2_twist_remapper_node" output="screen"/>
+    
+    <!--Käynnistetään robot localization kalman suodin node odom kehykselle-->
+
+    <node pkg="robot_localization" type="ekf_localization_node" name="robot_localization_ekf_node_odom" clear_params="true">
+        <param name="frequency" value="10." />  
+        <param name="sensor_timeout" value="0.2" />  
+        <param name="two_d_mode" value="true" />
+        <param name="publish_tf" value="true" />
+        <param name="map_frame" value="map" />
+        <param name="odom_frame" value="odom" />
+        <param name="base_link_frame" value="base_link" />
+        <param name="world_frame" value="odom" />
+        <param name="print_diagnostics" value="true" />
+        <remap from="odometry/filtered" to="odometry/filtered_twist" />
+        <param name="twist0" value="turtle1/sensor/twist" />
+        <param name="twist0_differential" value="false"/>
+        <rosparam param="twist0_config">[false, false, false, false, false, false,
+                                        true, true, false, false, false, true,
+                                        false, false, false]</rosparam>
+  </node>
+
+    <node pkg="robot_localization" type="ekf_localization_node" name="robot_localization_ekf_node_map"  clear_params="true">
+        <param name="frequency" value="10" />  
+        <param name="sensor_timeout" value="0.2" />  
+        <param name="two_d_mode" value="true" />
+        <param name="publish_tf" value="true" />
+        <param name="map_frame" value="map" />
+        <param name="odom_frame" value="odom" />
+        <param name="base_link_frame" value="base_link" />
+        <param name="world_frame" value="map" />
+        <param name="twist0" value="turtle1/sensor/twist" />
+        <rosparam param="twist0_config">[false, false, false, false, false, false,
+                                        true, true, false, false, false, true,
+                                        false, false, false]</rosparam>
+        <param name="pose0" value="turtle1/sensor/pose" />
+        <rosparam param="pose0_config">[true, true, false, false, false, true,
+                                        false, false, false, false, false, false,
+                                        false, false, false]</rosparam>
+        <remap from="odometry/filtered" to="odometry/filtered_map"/>
+    </node>
+
     <!--Käynniseteään node, joka kuuntelee filtteröityä viestiä ja liikuttaa turtle3 sen mukaan-->
     <node pkg="turtle_localization" type="turtle3_filtered.py" name="turtle3_twist_remapper_node" output="screen"/>
 
-    <!--Käynnistetään robot localization kalman suodin node-->
 
-    <node pkg="robot_localization" type="ekf_localization_node" name="robot_localization_ekf_node_odom" clear_params="true">
-    <param name="frequency" value="10." />  
-    <param name="sensor_timeout" value="0.2" />  
-    <param name="two_d_mode" value="true" />
-    <param name="publish_tf" value="true" />
-    <param name="map_frame" value="map" />
-    <param name="odom_frame" value="odom" />
-    <param name="base_link_frame" value="base_link" />
-    <param name="world_frame" value="odom" />
-    <param name="print_diagnostics" value="true" />
-    <remap from="odometry/filtered" to="odometry/filtered_twist" />
-    <param name="twist0" value="turtle1/sensor/twist" />
-    <param name="twist0_differential" value="false"/>
-    <rosparam param="twist0_config">[false, false, false, false, false, false,
-                                     true, true, false, false, false, true,
-                                     false, false, false]</rosparam>
-    <param name="twist1" value="turtle1/sensor2/twist" />
-    <param name="twist1_differential" value="false"/>
-    <rosparam param="twist1_config">[false, false, false, false, false, false,
-                                     true, true, false, false, false, true,
-                                     false, false, false]</rosparam>
-  </node>
 </launch>
+
+
+
+
+
 <!--x, y, z, roll, pitch, yaw, x', y', z', roll', pitch', yaw', x'', y'', z''
      paikka     orientaatio      nopeus        kulmanopeus      kiihtyvyys
 -->
