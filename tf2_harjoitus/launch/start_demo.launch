@@ -5,13 +5,14 @@
     <param name="scale_linear" value="2" type="double"/>
     <param name="scale_angular" value="2" type="double"/>
 
-    <node pkg="tf2_harjoitus" type="turtle_tf2_broadcaster.py" name="turtle1_tf2_broadcaster" output="screen">
-        <param name="turtle" type="string" value="turtle1" />
+    
+    <node name="turtle1_tf2_broadcaster" pkg="tf2_harjoitus" type="turtle_tf2_broadcaster.py" respawn="false" output="screen" >
+      <param name="turtle" type="string" value="turtle1" />
     </node>
-    <node pkg="tf2_harjoitus" type="turtle_tf2_broadcaster.py" name="turtle2_tf2_broadcaster" output="screen">
-        <param name="turtle" type="string" value="turtle1" />
+    <node name="turtle2_tf2_broadcaster" pkg="tf2_harjoitus" type="turtle_tf2_broadcaster.py" respawn="false" output="screen" >
+        <param name="turtle" type="string" value="turtle2" />
+    </node>
+    <node name="turtle_pointer" pkg="tf2_harjoitus" type="turtle_tf2_listener.py" respawn="false" output="screen" >
     </node>
 
-    <node pkg="tf2_harjoitus" type="turtle_tf2_listener.py" name="turtle_pointer" output="screen">
-    </node>
 </launch>
