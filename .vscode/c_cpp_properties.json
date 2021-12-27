@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/petri/ros/petri_koskinen_ws/devel/include/**",
+                "/opt/ros/noetic/include/**",
+                "/home/petri/ros/petri_koskinen_ws/src/simple_pub_sub/include/**",
+                "/home/petri/ros/petri_koskinen_ws/src/tf2_harjoitus/include/**",
+                "/usr/include/**"
+            ],
+            "name": "ROS",
+            "configurationProvider": "ms-vscode.cmake-tools"
+        }
+    ],
+    "version": 4
+}
