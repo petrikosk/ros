@@ -11,16 +11,16 @@ import math
 
 
 if __name__ == '__main__':
-    rospy.init_node('turtle3_twist_remapper_node')
+    rospy.init_node('turtle4_twist_remapper_node')
     rospy.wait_for_service('spawn')
     spawner = rospy.ServiceProxy('spawn', Spawn)
-    spawner(5.544, 5.544, 0, 'turtle3')
+    spawner(5.544, 5.544, 0, 'turtle4')
     tfBuffer = tf2_ros.Buffer()
     listener = tf2_ros.TransformListener(tfBuffer)
     rate = rospy.Rate(10.0)
     base_link_to_map_transform = TransformStamped()
-    rospy.wait_for_service('turtle3/teleport_absolute')
-    teleporter = rospy.ServiceProxy('turtle3/teleport_absolute', turtlesim.srv.TeleportAbsolute)
+    rospy.wait_for_service('turtle4/teleport_absolute')
+    teleporter = rospy.ServiceProxy('turtle4/teleport_absolute', turtlesim.srv.TeleportAbsolute)
 
     while not rospy.is_shutdown():
         try:

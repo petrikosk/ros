@@ -8,7 +8,7 @@ from geometry_msgs.msg import PoseWithCovarianceStamped
 import random
 from tf.transformations import quaternion_from_euler
 
-random_noise_x = rospy.get_param('/turtle_positioning_system/random_noise_x', 0,2)
+random_noise_x = rospy.get_param('/turtle_positioning_system/random_noise_x', 0.2)
 random_noise_y = rospy.get_param('/turtle_positioning_system/random_noise_y', 0.2)
 random_noise_theta = rospy.get_param('/turtle_positioning_system/random_noise_yaw', 0.2)
 
