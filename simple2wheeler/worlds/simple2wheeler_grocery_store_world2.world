@@ -1,0 +1,21 @@
+<?xml version='1.0'?>
+<sdf version='1.4'>
+    <world name="default">
+        <include>
+            <uri>model://ground_plane</uri>
+        </include>
+        <include>
+            <uri>model://sun</uri>
+        </include>
+        <!-- <include>
+            <uri>model://grocery_store</uri>
+            <name>grocery_store</name>
+            <pose>0 0 0 0 0 0</pose>
+        </include--> 
+        <include>
+            <uri>model://areena2</uri>
+            <static>true</static>
+            <pose>-0.1 -0.1 0 0 0 0</pose>
+        </include>
+    </world>
+</sdf>

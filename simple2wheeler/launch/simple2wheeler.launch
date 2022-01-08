@@ -1,18 +1,25 @@
+<?xml version="1.0"?>
 <launch>
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(find simple2wheeler)/world/simple2wheeler_grocery_store.world"/>
+        <arg name="world_name" value="simple2wheeler_grocery_store_world2.world"/>
         <arg name="gui" value="true"/>
+        <arg name="verbose" value="true"/>
 
     </include>
 
-    <param name="robot_description" 
-                command="$(find xacro)/xacro
-                        '$(find simple2wheeler)/urdf/simple2wheeler.xacro'"/>
+    <include file="$(find simple2wheeler)/launch/spawn_robotti_1.launch">
+        <arg name="x" value="1.5"/>
+        <arg name="y" value="1.5"/>
+        <arg name="z" value="1.1"/>
+    </include>
 
-    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description
-                -urdf -model simple2wheeler"/>
-
-    <node pkg="turtlesim" type="turtle_teleop_key" name="cmd_vel">
+    <!--node pkg="turtlesim" type="turtle_teleop_key" name="cmd_vel">
         <remap from="/turtle1/cmd_vel" to="cmd_vel"/>
-    </node>
+    </node-->
+
+    <!-- Node for obstacle and pit avoiding with random movement while not in danger zone -->
+    <node pkg="simple2wheeler" type="random_roam_in_areena2.py" name="auto_roam" output="screen"/>
+    
+    <!-- Logger node for X, Y and theta -->
+    <!--node pkg="simple2wheeler" type="logger.py" name="twist_logger" output="screen"/-->
 </launch>
